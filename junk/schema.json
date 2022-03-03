@@ -1,0 +1,95 @@
+[
+  {
+    "fields": {
+      "EntityID::generation": {
+        "former": [],
+        "type": "int16_t"
+      },
+      "EntityID::index": {
+        "former": [],
+        "type": "int16_t"
+      }
+    },
+    "former": [
+      "entityIndentify"
+    ],
+    "name": "EntityID",
+    "path": "Entity.ixx",
+    "module": "Entity"
+  },
+  {
+    "fields": {
+      "sister::a": {
+        "former": [],
+        "type": "int"
+      },
+      "sister::b": {
+        "former": [],
+        "type": "std::string"
+      },
+      "sister::c": {
+        "former": [
+          "cousin",
+          "brother"
+        ],
+        "type": "double"
+      }
+    },
+    "former": [
+      "aunt",
+      "uncle"
+    ],
+    "name": "sister",
+    "path": "Sister.ixx",
+    "module": "Sister"
+  },
+  {
+    "fields": {
+      "hambly::a": {
+        "former": [],
+        "type": "int"
+      },
+      "hambly::b": {
+        "former": [],
+        "type": "std::string"
+      },
+      "hambly::c": {
+        "former": [
+          "cousin",
+          "brother"
+        ],
+        "type": "double"
+      }
+    },
+    "former": [
+      "aunt",
+      "uncle"
+    ],
+    "name": "hambly",
+    "path": "Sister.ixx",
+    "module": "Sister"
+  },
+  {
+    "fields": {
+      "trevor::a": {
+        "former": [],
+        "type": "int"
+      },
+      "trevor::b": {
+        "former": [],
+        "type": "std::string"
+      },
+      "trevor::m": {
+        "former": [],
+        "type": "map<double, int>"
+      }
+    },
+    "former": [
+      "aunt",
+      "uncle"
+    ],
+    "name": "trevor",
+    "path": "Sister.ixx",
+    "module": "Sister"
+  }
+]
