@@ -30,7 +30,7 @@ public:
 	ComponentMask mask;
 	set<int64_t> dynamic_tags;
 	int level = 0;
-	int size;
+	int size = 0;
 	EntityStore* es;
 	World* owner;
 	ComponentMask dirty;

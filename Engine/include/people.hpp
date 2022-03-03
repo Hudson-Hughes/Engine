@@ -38,6 +38,5 @@ struct hambly {
 struct trevor {
 	int a;
 	string b;
-	struct hambly h;
 	map<double, int> m;
 };

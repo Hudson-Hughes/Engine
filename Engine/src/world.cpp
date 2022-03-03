@@ -70,16 +70,16 @@ int World::setParent(EntityID child, EntityID parent) {
     return result;
 }
 void World::bindParentPointers(EntityID child, EntityID parent) {
-    auto childArchetype = getEntityArchetype(child);
-    auto childIndex = es[child.index].archetypeIndex;
-    auto childTable = childArchetype->tables[childIndex / 64];
+    // auto childArchetype = getEntityArchetype(child);
+    // auto childIndex = es[child.index].archetypeIndex;
+    // auto childTable = childArchetype->tables[childIndex / 64];
     // if (parent == EntityID()) {
     //     for (auto componentId : ComponentParentList) childTable->GetComponentParentPointerArray(componentId)[childIndex % 64] = nullptr;
     //     return;
     // }
-    auto parentArchetype = getEntityArchetype(parent);
-    auto parentIndex = es[parent.index].archetypeIndex;
-    auto parentTable = parentArchetype->tables[parentIndex / 64];
+    // auto parentArchetype = getEntityArchetype(parent);
+    // auto parentIndex = es[parent.index].archetypeIndex;
+    // auto parentTable = parentArchetype->tables[parentIndex / 64];
     // for (auto componentId : ComponentParentList) {
     //     cout << childTable->GetComponentParentPointerArray(componentId) << "\t" << childIndex % 64 << " gets " << parentTable->pointerGrid[parentArchetype->componentIndex[componentId]][parentIndex % 64] << endl;
     //     childTable->GetComponentParentPointerArray(componentId)[childIndex % 64] = parentTable->pointerGrid[parentArchetype->componentIndex[componentId]][parentIndex % 64];
