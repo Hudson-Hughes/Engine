@@ -48,20 +48,6 @@ public:
 
 	void* getPointer(int component, int index) const;
 
-	template<typename T>
-	T* getComponentPointer(int itemIndex) {
-		return getComponentPointer(itemIndex, GetComponentID<T>());
-	};
-
-	void* getComponentPointer(int itemIndex, int componentID);
-
-	template<typename T>
-	T* getComponentParentPointer(int itemIndex) {
-		return getComponentParentPointer(itemIndex, GetComponentID<T>());
-	}
-
-	void* getComponentParentPointer(int itemIndex, int componentID) const;
-
 	EntityID getEntityID(int index);
 
 	void setupOffsetMap();

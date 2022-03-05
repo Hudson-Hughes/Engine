@@ -20,8 +20,6 @@ public:
     Archetype* owner;
     std::allocator<char> alloc;
     char* buffer;
-    vector<vector<void*>> pointerGrid;
-    ParentPointerGrid parentPointerGrid;
     ~Table();
     Table(Archetype* owner);
     inline bool full();;
@@ -30,9 +28,4 @@ public:
         return GetComponentArray(GetComponentID<T>());
     };
     void* GetComponentArray(int componentID);
-    template <typename T>
-    void** GetComponentParentPointerArray() {
-        return GetComponentParentPointerArray(GetComponentID<T>());
-    }
-    void** GetComponentParentPointerArray(int componentID);
 };

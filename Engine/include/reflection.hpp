@@ -63,8 +63,12 @@ template<> void ToJSON<TYPE>(nlohmann::json& nlohmann_json_j, TYPE* data); \
 template<> void FromJSON<TYPE>(nlohmann::json& nlohmann_json_j, TYPE* data); \
 template<> void ToJSON<INDEX>(nlohmann::json& nlohmann_json_j, void* data); \
 template<> void FromJSON<INDEX>(nlohmann::json& nlohmann_json_j, void* data); \
-template<> constexpr size_t GetComponentSize<INDEX>(){ return sizeof(TYPE); } \
-template<> constexpr int GetComponentID<TYPE>(){ return INDEX; } \
+template<> constexpr size_t GetComponentSize<INDEX>(); \
+template<> constexpr int GetComponentID<TYPE>(); \
+template<> constexpr size_t GetComponentSize<INDEX>() \
+    { return sizeof(TYPE); } \
+template<> constexpr int GetComponentID<TYPE>() \
+    { return INDEX; } \
 template<> void Destroy<TYPE>(void* obj_ptr); \
 template<> void* Construct<TYPE>(void* obj_ptr); \
 template<> void Destroy<INDEX>(void* obj_ptr); \

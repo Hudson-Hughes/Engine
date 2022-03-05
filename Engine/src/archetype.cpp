@@ -18,7 +18,6 @@ int Archetype::allocateItem(EntityID entityID, bool initialize) {
 	if (tables.empty() || tables.back()->count > 63) tables.push_back(new Table(this));
 	Table* table = tables.back();
 	if (initialize) for (int c = 1; c < 512; c++) if (mask[c]) ComponentConstructors[c](getPointer(c, getNextIndex()));
-	for (int c = 0; c < 512; c++) if (mask[c]) tables[getNextIndex() / 64]->pointerGrid[componentIndex[c]][getNextIndex() % 64] = getPointer(c, getNextIndex());
 	EntityID* id = (EntityID*)getPointer(0, getNextIndex());
 	*id = { entityID };
 	this->updateEntityStorage(*id, { this, getNextIndex() });
@@ -36,9 +35,6 @@ void Archetype::deallocateItem(int index, bool destruct) {
 		else
 			ComponentCopiers[c](getPointer(c, getLastIndex()), getPointer(c, index));
 	table->count--;
-	for_each(table->pointerGrid.begin(), table->pointerGrid.end(), [index](auto& v) {
-		v[index % 64] = nullptr;
-		});
 	if (table->count < 1) tables.pop_back();
 	size--;
 }
@@ -49,7 +45,7 @@ void Archetype::updateEntityStorage(EntityID entityID, Spot spot) {
 	(*es)[entityID.index].archetypeIndex = spot.index;
 }
 
-Archetype::Archetype(World* owner, EntityStore* es, ComponentMask _mask, int level) : es(es) {
+Archetype::Archetype(World* owner, EntityStore* es, ComponentMask _mask, int level) : es(es), level(level) {
 	_mask[0] = true;
 	mask = _mask;
 	setupOffsetMap();
@@ -74,15 +70,6 @@ void* Archetype::getPointer(int component, int index) const {
 	return (char*)componentArray + (idx * ComponentSizes[component]);
 }
 
-void* Archetype::getComponentPointer(int itemIndex, int componentID) {
-	assert(mask[componentID] && componentIndex[componentID] > -1);
-	return tables[itemIndex / 64]->pointerGrid[componentIndex[componentID]][itemIndex % 64];
-};
-
-void* Archetype::getComponentParentPointer(int itemIndex, int componentID) const {
-	assert(ComponentParentStatus[componentID]);
-	return tables[itemIndex / 64]->GetComponentParentPointerArray(componentID)[itemIndex % 64];
-}
 
 EntityID Archetype::getEntityID(int index) {
 	return *(EntityID*)getPointer(0, index);
@@ -150,16 +137,16 @@ ostream& operator <<(std::ostream& os, const Archetype& val) {
 			os << c << "\t" << val.getPointer(c, i) << '\t' << k << endl;
 		}
 		if (!val.components.size()) os << "\tEMPTY" << endl;
-		os << "Parent Pointer Resolve" << endl;
-		for (auto c : ComponentParentList) {
-			auto p = val.getComponentParentPointer(i, c);
-			cout << p << endl;
-			if (p) {
-				nlohmann::json k;
-				ToJSONArr[c](k, val.getComponentParentPointer(i, c));
-				os << '\t' << p << "\t" << k << endl;
-			}
-		}
+		// os << "Parent Pointer Resolve" << endl;
+		// for (auto c : ComponentParentList) {
+		// 	auto p = val.getComponentParentPointer(i, c);
+		// 	cout << p << endl;
+		// 	if (p) {
+		// 		nlohmann::json k;
+		// 		ToJSONArr[c](k, val.getComponentParentPointer(i, c));
+		// 		os << '\t' << p << "\t" << k << endl;
+		// 	}
+		// }
 	}
 	os << "-----------------------------" << endl;
 	return os;

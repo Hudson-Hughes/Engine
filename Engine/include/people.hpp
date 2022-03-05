@@ -25,18 +25,18 @@ public:
 
 struct sister {
 	double c;
-	string b;
+	int b;
 	int a;
 };
 
 struct hambly {
 	int a;
-	string b;
+	int b;
 	double c;
 };
 
 struct trevor {
 	int a;
-	string b;
-	map<double, int> m;
+	int b;
+	int m;
 };

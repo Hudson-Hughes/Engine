@@ -121,7 +121,7 @@ ostream& operator<<(ostream& os, const World& dt) {
     os << "Archetype Count: " << dt.archetypes.size() << "\tEntity Count: " << dt.es.livingEntities << endl;
     os << dt.es << endl;
     for (int i = 0; i < dt.archetypes.size(); i++) {
-        for (auto const& i : dt.archetypes[i]) os << *i;
+        for (auto const& i : dt.archetypes[i]) if(i->size) os << *i;
     }
     os << "-------------------------------";
     return os;
