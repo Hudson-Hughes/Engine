@@ -119,6 +119,10 @@ int EntityStore::setParent(EntityID child, EntityID parent) {
 void EntityStore::orphan(EntityID child) {
     if (!isAlive(at(child).parent))
         return;
+    if (!isAlive(at(child).prevSibling) && !isAlive(at(child).nextSibling)) {
+        // Is only child
+        at(at(child).parent).child = EntityID();
+    }
     if (!isAlive(at(child).prevSibling) && isAlive(at(child).nextSibling)) {
         // Is first child
         if (!isAlive(at(child).nextSibling)) {
