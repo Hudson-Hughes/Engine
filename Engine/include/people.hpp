@@ -32,7 +32,9 @@ struct sister {
 struct hambly {
 	int a;
 	int b;
-	double c;
+	// map<string, double> c = { {"CPU", 10}, {"GPU", 15}, {"RAM", 20}, };
+	int c;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(hambly, a, b, c);
 };
 
 struct trevor {

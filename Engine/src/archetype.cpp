@@ -76,9 +76,9 @@ EntityID Archetype::getEntityID(int index) {
 }
 
 void Archetype::setupOffsetMap() {
-	cout << "Creating Offset Map for Level " << level << " Archetype: " << ComponentMaskAsString(mask) << endl;
+	// cout << "Creating Offset Map for Level " << level << " Archetype: " << ComponentMaskAsString(mask) << endl;
 	size_t current = 0;
-	for (int i = 0; i < 512; i++) if (mask.test(i)) { offsetMap[i] = current; current = current + ComponentSizes[i] * 64; cout << "" << ComponentNames[i] << "\t" << offsetMap[i] << "\t" << ComponentSizes[i] << endl; }
+	for (int i = 0; i < 512; i++) if (mask.test(i)) { offsetMap[i] = current; current = current + ComponentSizes[i] * 64; /* cout << "" << ComponentNames[i] << "\t" << offsetMap[i] << "\t" << ComponentSizes[i] << endl; */ }
 	table_size = current;
 }
 

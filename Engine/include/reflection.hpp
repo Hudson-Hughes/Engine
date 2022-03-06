@@ -12,7 +12,7 @@ using namespace std;
 #define _PARENT *
 
 template <typename T> struct READ { using component = T; using kind = std::integral_constant<int, 0>; };
-template <typename T> struct WRITTEN { using component = T; using kind = std::integral_constant<int, 1>; };
+template <typename T> struct WRITE { using component = T; using kind = std::integral_constant<int, 1>; };
 template <typename T> struct OPTIONAL { using component = T; using kind = std::integral_constant<int, 2>; };
 template <typename T> struct NOT { using component = T; using kind = std::integral_constant<int, 3>; };
 template <typename T> struct PARENT { using component = T; using kind = std::integral_constant<int, 4>; };
@@ -33,6 +33,16 @@ void FromJSON(nlohmann::json& nlohmann_json_j, void* data);
 
 template <class T>
 constexpr int GetComponentID();
+template <class T>
+constexpr int GetComponentIDForRead();
+template <class T>
+constexpr int GetComponentIDForWrite();
+template <class T>
+constexpr int GetComponentIDForOptional();
+template <class T>
+constexpr int GetComponentIDForNot();
+template <class T>
+constexpr int GetComponentIDForParent();
 template <int T>
 constexpr size_t GetComponentSize();
 template <class T>
@@ -69,6 +79,11 @@ template<> constexpr size_t GetComponentSize<INDEX>() \
     { return sizeof(TYPE); } \
 template<> constexpr int GetComponentID<TYPE>() \
     { return INDEX; } \
+template<> constexpr int GetComponentIDForRead<READ<TYPE>>() { return INDEX; }; \
+template<> constexpr int GetComponentIDForWrite<WRITE<TYPE>>() { return INDEX; }; \
+template<> constexpr int GetComponentIDForOptional<OPTIONAL<TYPE>>() { return INDEX; }; \
+template<> constexpr int GetComponentIDForNot<NOT<TYPE>>() { return INDEX; }; \
+template<> constexpr int GetComponentIDForParent<PARENT<TYPE>>() { return INDEX; }; \
 template<> void Destroy<TYPE>(void* obj_ptr); \
 template<> void* Construct<TYPE>(void* obj_ptr); \
 template<> void Destroy<INDEX>(void* obj_ptr); \
