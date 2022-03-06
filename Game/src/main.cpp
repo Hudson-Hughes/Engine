@@ -6,7 +6,7 @@
 
 using namespace std;
 
-constexpr MaskQuery q = GenerateQueryMasks<READ<hambly>, NOT<sister>, OPTIONAL<trevor>>();
+constexpr MaskQuery q = Query<READ<hambly>, NOT<sister>, OPTIONAL<trevor>>;
 
 int main(){
     std::cout << "Running " << ENGINE_VERSION << std::endl;
@@ -19,5 +19,11 @@ int main(){
     world.orphan(e2);
     world.setParent(e1, e2);
     
+    std::cout << "READ:  " << q.read_mask << std::endl;
+    std::cout << "WRITE: " << q.write_mask << std::endl;
+    std::cout << "OPT:   " << q.optional_mask << std::endl;
+    std::cout << "NOT:   " << q.not_mask << std::endl;
+    std::cout << "PARENT:" << q.parent_mask << std::endl;
+
     std::cout << world << std::endl << std::endl;
 }

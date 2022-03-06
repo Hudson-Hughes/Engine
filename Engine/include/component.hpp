@@ -95,31 +95,10 @@ std::string ComponentMaskAsString(ComponentMask mask);
 ComponentMask AlteredMask(ComponentMask add = ComponentMask(0), ComponentMask remove = ComponentMask(0), ComponentMask original = ComponentMask(0));
 
 template <class, template <class> class>
-struct is_read : public std::false_type {};
-template <class T>
-struct is_read<READ<T>, READ> : public std::true_type {};
-//---------------------------------------------------
-template <class, template <class> class>
-struct is_write : public std::false_type {};
-template <class T>
-struct is_write<WRITE<T>, WRITE> : public std::true_type {};
-//---------------------------------------------------
-template <class, template <class> class>
-struct is_optional : public std::false_type {};
-template <class T>
-struct is_optional<OPTIONAL<T>, OPTIONAL> : public std::true_type {};
-//---------------------------------------------------
-template <class, template <class> class>
-struct is_not : public std::false_type {};
-template <class T>
-struct is_not<NOT<T>, NOT> : public std::true_type {};
-//---------------------------------------------------
-template <class, template <class> class>
-struct is_parent : public std::false_type {};
-template <class T>
-struct is_parent<PARENT<T>, PARENT> : public std::true_type {};
-//---------------------------------------------------
+struct is_instance : public std::false_type {};
 
+template <class T, template <class> class U>
+struct is_instance<U<T>, U> : public std::true_type {};
 
 template <typename... Ts>
 struct extract_read_components {
@@ -127,7 +106,7 @@ struct extract_read_components {
     {
         ComponentMask bs;
         auto append = [i = 0, &bs]<typename T>() mutable {
-            if (is_read<T>::value)
+            if (is_instance<T, READ>::value)
                 bs.set(GetComponentIDForRead<T>());
         };
         (append.template operator() < Ts > (), ...);
@@ -143,7 +122,7 @@ struct extract_write_components {
     {
         ComponentMask bs;
         auto append = [i = 0, &bs]<typename T>() mutable {
-            if (is_write<T>::value)
+            if (is_instance<T, WRITE>::value)
                 bs.set(GetComponentIDForWrite<T>());
         };
         (append.template operator() < Ts > (), ...);
@@ -159,7 +138,7 @@ struct extract_optional_components {
     {
         ComponentMask bs;
         auto append = [i = 0, &bs]<typename T>() mutable {
-            if (is_optional<T>::value)
+            if (is_instance<T, OPTIONAL>::value)
                 bs.set(GetComponentIDForOptional<T>());
         };
         (append.template operator() < Ts > (), ...);
@@ -175,7 +154,7 @@ struct extract_not_components {
     {
         ComponentMask bs;
         auto append = [i = 0, &bs]<typename T>() mutable {
-            if (is_not<T>::value)
+            if (is_instance<T, NOT>::value)
                 bs.set(GetComponentIDForNot<T>());
         };
         (append.template operator() < Ts > (), ...);
@@ -191,7 +170,7 @@ struct extract_parent_components {
     {
         ComponentMask bs;
         auto append = [i = 0, &bs]<typename T>() mutable {
-            if (is_parent<T>::value)
+            if (is_instance<T, PARENT>::value)
                 bs.set(GetComponentIDForParent<T>());
         };
         (append.template operator() < Ts > (), ...);
@@ -215,7 +194,7 @@ static constexpr ComponentMask ParentComponents = extract_parent_components<Ts..
 
 struct MaskQuery {
     ComponentMask read_mask;
-    ComponentMask written_mask;
+    ComponentMask write_mask;
     ComponentMask optional_mask;
     ComponentMask not_mask;
     ComponentMask parent_mask;
@@ -231,3 +210,16 @@ constexpr MaskQuery GenerateQueryMasks() {
         ParentComponents<Ts...>
     );
 };
+
+template <typename... Ts>
+struct query_method {
+    static constexpr auto impl() noexcept
+    {
+        return GenerateQueryMasks<Ts...>();
+    }
+    static constexpr MaskQuery arr = impl();
+    static constexpr auto value = arr;
+};
+
+template <typename ...Ts>
+static constexpr MaskQuery Query = query_method<Ts...>::value;
