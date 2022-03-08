@@ -1,6 +1,9 @@
 #include <json.hpp>
 #include <world.hpp>
 #include <people.hpp>
+#include <filter.hpp>
+#include <component.hpp>
+#include <system.hpp>
 
 #include <iostream>
 
@@ -26,4 +29,6 @@ int main(){
     std::cout << "PARENT:" << q.parent_mask << std::endl;
 
     std::cout << world << std::endl << std::endl;
+    vector<HamblySystem> s = {HamblySystem()};
+    s[0].cycle();
 }

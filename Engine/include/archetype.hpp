@@ -66,4 +66,10 @@ public:
 	static Spot copyOrCreateItem(EntityID entityID, Spot source, Archetype* destinationArchetype);
 
 	friend ostream& operator<<(ostream& os, const Archetype& val);
+
+	using const_iterator = std::vector<Table*>::const_iterator;
+
+    const_iterator begin() const { return tables.begin(); }
+    const_iterator end() const { return tables.end(); }
+
 };

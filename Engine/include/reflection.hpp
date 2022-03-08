@@ -11,11 +11,24 @@ using namespace std;
 #define _OPTIONAL &
 #define _PARENT *
 
-template <typename T> struct READ { using component = T; using kind = std::integral_constant<int, 0>; };
-template <typename T> struct WRITE { using component = T; using kind = std::integral_constant<int, 1>; };
-template <typename T> struct OPTIONAL { using component = T; using kind = std::integral_constant<int, 2>; };
-template <typename T> struct NOT { using component = T; using kind = std::integral_constant<int, 3>; };
-template <typename T> struct PARENT { using component = T; using kind = std::integral_constant<int, 4>; };
+struct KIND {};
+
+#define DEFINE_KIND(NAME, AS_ARGUMENT, INDEX) \
+template <typename T> struct NAME : KIND { \
+    using component = T; \
+    using comp = typename T; \
+    using as_argument = AS_ARGUMENT; \
+    using kind = std::integral_constant<int, INDEX>; \
+    using iterator_type = ITERATOR_TYPE; \
+}; \
+
+DEFINE_KIND(READ, const T&, 0, input_iterator_tag)
+DEFINE_KIND(WRITE, T&, 1, forward_iterator_tag)
+DEFINE_KIND(OPTIONAL_READ, T*, 2, input_iterator_tag)
+DEFINE_KIND(OPTIONAL_WRITE, T*, 3, input_iterator_tag)
+DEFINE_KIND(NOT, T, 4, input_iterator_tag)
+DEFINE_KIND(PARENT_READ, T*, 5, input_iterator_tag)
+DEFINE_KIND(PARENT_WRITE, T*, 6, input_iterator_tag)
 
 template <class T>
 void ToJSON(nlohmann::json& nlohmann_json_j, void* data);
@@ -81,9 +94,11 @@ template<> constexpr int GetComponentID<TYPE>() \
     { return INDEX; } \
 template<> constexpr int GetComponentIDForRead<READ<TYPE>>() { return INDEX; }; \
 template<> constexpr int GetComponentIDForWrite<WRITE<TYPE>>() { return INDEX; }; \
-template<> constexpr int GetComponentIDForOptional<OPTIONAL<TYPE>>() { return INDEX; }; \
+template<> constexpr int GetComponentIDForOptional<OPTIONAL_READ<TYPE>>() { return INDEX; }; \
+template<> constexpr int GetComponentIDForOptional<OPTIONAL_WRITE<TYPE>>() { return INDEX; }; \
 template<> constexpr int GetComponentIDForNot<NOT<TYPE>>() { return INDEX; }; \
-template<> constexpr int GetComponentIDForParent<PARENT<TYPE>>() { return INDEX; }; \
+template<> constexpr int GetComponentIDForParent<PARENT_READ<TYPE>>() { return INDEX; }; \
+template<> constexpr int GetComponentIDForParent<PARENT_WRITE<TYPE>>() { return INDEX; }; \
 template<> void Destroy<TYPE>(void* obj_ptr); \
 template<> void* Construct<TYPE>(void* obj_ptr); \
 template<> void Destroy<INDEX>(void* obj_ptr); \

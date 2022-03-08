@@ -28,4 +28,5 @@ public:
         return GetComponentArray(GetComponentID<T>());
     };
     void* GetComponentArray(int componentID);
+    
 };
