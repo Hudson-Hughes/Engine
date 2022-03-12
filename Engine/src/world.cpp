@@ -117,6 +117,10 @@ int World::getEntityLevel(EntityID entityID) {
     assert(es[entityID.index].archetype);
     return es[entityID.index].archetype->level;
 };
+bool World::parentHasComponent(EntityID child, int componentID){
+    if (!es.isAlive(es[child].parent)) return false;
+    return es[es[child].parent].archetype->mask[componentID];
+}
 ostream& operator<<(ostream& os, const World& dt) {
     os << "Archetype Count: " << dt.archetypes.size() << "\tEntity Count: " << dt.es.livingEntities << endl;
     os << dt.es << endl;

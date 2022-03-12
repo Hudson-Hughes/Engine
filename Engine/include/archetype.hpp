@@ -67,9 +67,69 @@ public:
 
 	friend ostream& operator<<(ostream& os, const Archetype& val);
 
-	using const_iterator = std::vector<Table*>::const_iterator;
+	using table_iterator = std::vector<Table*>::const_iterator;
 
-    const_iterator begin() const { return tables.begin(); }
-    const_iterator end() const { return tables.end(); }
+    table_iterator begin() const { return tables.begin(); }
+    table_iterator end() const { return tables.end(); }
+
+	template<typename T>
+    bool HasComponent() {
+        return HasComponent(GetComponentID<T>());
+    }
+    bool HasComponent(int componentID);
+
+    // template<typename T>
+    // struct ComponentIterator
+    // {
+    //     using iterator_category = std::forward_iterator_tag;
+    //     using difference_type   = std::ptrdiff_t;
+    //     using value_type        = T;
+    //     using pointer           = T*;
+    //     using reference         = T&;
+
+    //     ComponentIterator(pointer ptr) : m_ptr(ptr) {}
+
+    //     reference operator*() const { return *m_ptr; }
+    //     pointer operator->() { return m_ptr; }
+    //     ComponentIterator<T>& operator++() { m_ptr++; return *this; }  
+    //     ComponentIterator<T> operator++(int) { ComponentIterator<T> tmp = *this; ++(*this); return tmp; }
+    //     friend bool operator== (const ComponentIterator<T>& a, const ComponentIterator<T>& b) { return a.m_ptr == b.m_ptr; };
+    //     friend bool operator!= (const ComponentIterator<T>& a, const ComponentIterator<T>& b) { return a.m_ptr != b.m_ptr; };  
+
+    // private:
+    //     pointer m_ptr;
+    // };
+
+    // template<typename T>
+    // ComponentIterator<T> begin() { assert(HasComponent<T>()); return ComponentIterator<T>(&GetComponentArray<T>()[0]); }
+    // template<typename T>
+    // ComponentIterator<T> end()   { assert(HasComponent<T>()); return ComponentIterator<T>(&GetComponentArray<T>()[count]); }
+
+    // template<typename T>
+    // struct ConstComponentIterator
+    // {
+    //     using iterator_category = std::forward_iterator_tag;
+    //     using difference_type   = std::ptrdiff_t;
+    //     using value_type        = T;
+    //     using pointer           = T*;
+    //     using reference         = T&;
+
+    //     ConstComponentIterator(pointer ptr) : m_ptr(ptr) {}
+
+    //     reference operator*() const { return *m_ptr; }
+    //     pointer operator->() { return m_ptr; }
+    //     const ConstComponentIterator<T>& operator++() { m_ptr++; return *this; }  
+    //     const ConstComponentIterator<T> operator++(int) { Iterator<T> tmp = *this; ++(*this); return tmp; }
+    //     friend bool operator== (const ConstComponentIterator<T>& a, const ConstComponentIterator<T>& b) { return a.m_ptr == b.m_ptr; };
+    //     friend bool operator!= (const ConstComponentIterator<T>& a, const ConstComponentIterator<T>& b) { return a.m_ptr != b.m_ptr; };  
+
+    // private:
+    //     pointer m_ptr;
+    // };
+
+    // template<typename T>
+    // ConstComponentIterator<T> cbegin() { assert(HasComponent<T>()); return ConstComponentIterator<T>(&GetComponentArray<T>()[0]); }
+    // template<typename T>
+    // ConstComponentIterator<T> cend()   { assert(HasComponent<T>()); return ConstComponentIterator<T>(&GetComponentArray<T>()[count]); }
 
 };

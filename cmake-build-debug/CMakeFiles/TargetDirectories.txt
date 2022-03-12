@@ -1,0 +1,8 @@
+C:/Users/96tho/Desktop/project/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/96tho/Desktop/project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/96tho/Desktop/project/cmake-build-debug/Engine/CMakeFiles/engine.dir
+C:/Users/96tho/Desktop/project/cmake-build-debug/Engine/CMakeFiles/edit_cache.dir
+C:/Users/96tho/Desktop/project/cmake-build-debug/Engine/CMakeFiles/rebuild_cache.dir
+C:/Users/96tho/Desktop/project/cmake-build-debug/Game/CMakeFiles/game.dir
+C:/Users/96tho/Desktop/project/cmake-build-debug/Game/CMakeFiles/edit_cache.dir
+C:/Users/96tho/Desktop/project/cmake-build-debug/Game/CMakeFiles/rebuild_cache.dir

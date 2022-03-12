@@ -38,6 +38,11 @@ public:
     T* getParentPointer(EntityID child) {
         return getParentPointer(child, GetComponentID<T>());
     }
+    bool parentHasComponent(EntityID child, int componentID);
+    template <typename T>
+    bool parentHasComponent(EntityID child){
+        return parentHasComponent<GetComponentID<T>>(child);
+    }
     void removeComponents(EntityID entity, ComponentMask toRemove);
     void addComponents(EntityID entity, ComponentMask toAdd);
     Archetype* getEntityArchetype(EntityID entityID);

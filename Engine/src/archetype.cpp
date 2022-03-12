@@ -123,6 +123,10 @@ Spot Archetype::copyOrCreateItem(EntityID entityID, Spot source, Archetype* dest
 	return spot;
 }
 
+bool Archetype::HasComponent(int componentID) {
+	return mask[componentID];
+}
+
 ostream& operator <<(std::ostream& os, const Archetype& val);
 
 ostream& operator <<(std::ostream& os, const Archetype& val) {

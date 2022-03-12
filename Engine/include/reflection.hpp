@@ -6,29 +6,34 @@
 
 using namespace std;
 
-#define _READ const
-#define _NOT volatile
-#define _OPTIONAL &
-#define _PARENT *
-
 struct KIND {};
 
-#define DEFINE_KIND(NAME, AS_ARGUMENT, INDEX) \
+#define DEFINE_KIND(NAME, AS_ARGUMENT, INDEX, ITERATOR_TYPE, WRITABLE, GIVES_POINTER) \
 template <typename T> struct NAME : KIND { \
     using component = T; \
     using comp = typename T; \
     using as_argument = AS_ARGUMENT; \
     using kind = std::integral_constant<int, INDEX>; \
     using iterator_type = ITERATOR_TYPE; \
+    using writabele = std::WRITABLE; \
+    using gives_pointer = std::GIVES_POINTER; \
 }; \
 
-DEFINE_KIND(READ, const T&, 0, input_iterator_tag)
-DEFINE_KIND(WRITE, T&, 1, forward_iterator_tag)
-DEFINE_KIND(OPTIONAL_READ, T*, 2, input_iterator_tag)
-DEFINE_KIND(OPTIONAL_WRITE, T*, 3, input_iterator_tag)
-DEFINE_KIND(NOT, T, 4, input_iterator_tag)
-DEFINE_KIND(PARENT_READ, T*, 5, input_iterator_tag)
-DEFINE_KIND(PARENT_WRITE, T*, 6, input_iterator_tag)
+#define CONST_PTR(TYPE) const TYPE* const
+
+DEFINE_KIND(READ, const T&, 0, input_iterator_tag, false_type, false_type)
+DEFINE_KIND(WRITE, T&, 1, forward_iterator_tag, true_type, false_type)
+DEFINE_KIND(OPTIONAL_READ, const T* const, 2, input_iterator_tag, false_type, true_type)
+DEFINE_KIND(OPTIONAL_WRITE, T* const, 3, input_iterator_tag, true_type, true_type)
+DEFINE_KIND(NOT, T, 4, input_iterator_tag, true_type, false_type)
+DEFINE_KIND(PARENT_READ, const T* const, 5, input_iterator_tag, false_type, true_type)
+DEFINE_KIND(PARENT_WRITE, T* const, 6, input_iterator_tag, true_type, true_type)
+
+template <class T, template <class T> class U>
+struct is_kind : public std::false_type {};
+
+template <class T, template <class> class U>
+struct is_kind<U<T>, U> : public std::is_base_of<U, KIND> {};
 
 template <class T>
 void ToJSON(nlohmann::json& nlohmann_json_j, void* data);

@@ -11,4 +11,8 @@ inline bool Table::full() { return count == 64; };
 void* Table::GetComponentArray(int componentID) {
     return buffer + owner->offsetMap[componentID];
 }
+
+bool Table::HasComponent(int componentID) {
+    return owner->mask[componentID];
+}
   
