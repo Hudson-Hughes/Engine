@@ -154,6 +154,14 @@ bool EntityStore::isAlive(EntityID entity) {
         entities[entity.index].generation == entity.generation;
 }
 
+EntityID EntityStore::getParent(EntityID child){
+    return at(child).parent;
+}
+Spot EntityStore::getParentSpot(EntityID child){
+    EntityID parentID = getParent(child);
+	return isAlive(parentID) ? at(parentID).extractSpot() : Spot();
+}
+
 void EntityStore::killEntity(EntityID entityId) {
     if (!isAlive(entityId))
         return;

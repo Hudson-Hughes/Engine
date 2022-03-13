@@ -10,6 +10,8 @@
 #include <stack>
 #include <assert.h>
 
+#include "spot.hpp"
+
 using namespace std;
 
 class Archetype;
@@ -38,6 +40,10 @@ struct EntityStorage {
     void clear();
 
     friend ostream& operator<<(ostream& os, const EntityStorage& dt);
+
+    Spot extractSpot(){
+        return Spot(archetype, archetypeIndex);
+    }
 };
 std::ostream& operator<<(std::ostream& os, const EntityStorage& i);
 
@@ -57,6 +63,8 @@ public:
     EntityID freshEntity();
     EntityID freshChild(EntityID parent);
 
+    EntityID getParent(EntityID child);
+    Spot getParentSpot(EntityID child);
     int setParent(EntityID child, EntityID parent);
     void orphan(EntityID child);
     bool isAlive(EntityID entity);

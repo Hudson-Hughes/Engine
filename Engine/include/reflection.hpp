@@ -17,6 +17,7 @@ template <typename T> struct NAME : KIND { \
     using iterator_type = ITERATOR_TYPE; \
     using writabele = std::WRITABLE; \
     using gives_pointer = std::GIVES_POINTER; \
+    using maybe_pointer = std::conditional<gives_pointer::value, T*, T>; \
 }; \
 
 #define CONST_PTR(TYPE) const TYPE* const

@@ -85,7 +85,9 @@ class System : public Sys {
         cout << "System cycle" << endl;
         Item t;
         int entity_idx = 0;
+        // std::tuple<typename Ts::maybe_pointer...> pointers;
         for(auto archetype : matches){
+            
             for(auto table : archetype->tables){
                 auto pointers = std::make_tuple(table->GetComponentArray<typename Ts::component>()...);
                 for(int table_idx = 0; table_idx < table->count; table_idx++){

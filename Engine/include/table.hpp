@@ -107,18 +107,4 @@ public:
         assert(HasComponent<T>() && index < count);
         return &GetComponentArray<T>()[index];
     }
-
-    template<template <typename> class K, class C>
-    const C& operator[] (int index)
-    {
-        assert(HasComponent<C>() && index < count);
-        return &GetComponentArray<C>()[index];
-    }
-
-    // template<template <typename> class, class C>
-    // const C& operator[] (int index)
-    // {
-    //     assert(HasComponent<C>() && index < count);
-    //     return &GetComponentArray<C>()[index];
-    // }
 };

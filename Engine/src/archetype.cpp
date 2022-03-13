@@ -65,11 +65,17 @@ int Archetype::getNextIndex() {
 }
 
 void* Archetype::getPointer(int component, int index) const {
+	if(!mask[component]) return nullptr;
 	int idx = index % 64;
 	void* componentArray = tables[index / 64]->buffer + offsetMap[component];
 	return (char*)componentArray + (idx * ComponentSizes[component]);
 }
 
+void* Archetype::getParentPointer(int component, int index){
+	EntityID entityID = getEntityID(index);
+	Spot parentSpot = es->getParentSpot(entityID);
+	return parentSpot.archetype->getPointer(component, parentSpot.index);
+}
 
 EntityID Archetype::getEntityID(int index) {
 	return *(EntityID*)getPointer(0, index);
